@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: hello-kubernetes
+spec:
+  selector:
+    ## app: hello <= will have to match the label from the deployment.yaml spec
+    #app: hello
+    app: hello-k8s
+    #app: hello-kubernetes
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP

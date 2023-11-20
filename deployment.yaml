@@ -1,0 +1,38 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: hello-kubernetes
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello-k8s
+  template:
+    metadata:
+      labels:
+        app: hello-k8s
+    spec:
+      containers:
+        - name: hello-kubernetes
+          image: paulbouwer/hello-kubernetes:1
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: MESSAGE
+              #value: 'Hello #thenewITgirls! :)'
+              valueFrom:
+                #configMapKeyRef:
+                #  name: hello-kubernetes-config
+                #  key: message
+                secretKeyRef:
+                  name: hello-kubernetes-secrets
+                  key: mySecretMessage
+            - name: KUBERNETES_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
